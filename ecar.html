@@ -1866,8 +1866,7 @@ pre code {
 
 <div id="TOC">
 <ul>
-<li><a href="#r-library"><span class="toc-section-number">1</span> R
-library</a></li>
+<li><a href="#r-packages-loaded"><span class="toc-section-number">1</span> R PACKAGES LOADED</a></li>
 <li><a href="#introduction"><span class="toc-section-number">2</span>
 INTRODUCTION</a></li>
 <li><a href="#data-preparation"><span class="toc-section-number">3</span> DATA PREPARATION</a>
@@ -1883,13 +1882,18 @@ DATA CLEANING</a>
 <li><a href="#numeric-conversion"><span class="toc-section-number">4.1</span> Numeric Conversion</a></li>
 <li><a href="#rapidcharge-yesno"><span class="toc-section-number">4.2</span> RapidCharge Yes/No</a></li>
 <li><a href="#powertrain-rename"><span class="toc-section-number">4.3</span> PowerTrain Rename</a></li>
-<li><a href="#factor-conversion"><span class="toc-section-number">4.4</span> Factor Conversion</a></li>
+<li><a href="#triming"><span class="toc-section-number">4.4</span>
+Triming</a></li>
+<li><a href="#factor-conversion-rearrangement"><span class="toc-section-number">4.5</span> Factor Conversion &amp;
+rearrangement</a></li>
+<li><a href="#variable-removal"><span class="toc-section-number">4.6</span> Variable removal</a></li>
 </ul></li>
+<li><a href="#statistical-summary"><span class="toc-section-number">5</span> Statistical Summary</a></li>
 </ul>
 </div>
 
-<div id="r-library" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> R library</h1>
+<div id="r-packages-loaded" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> R PACKAGES LOADED</h1>
 <pre class="r"><code>library(data.table)
 library(tidyverse)
 library(kableExtra)
@@ -2230,29 +2234,19 @@ that “-” has been given to these values instead of numbers.</p>
 {"columns":[{"label":["Brand"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Model"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Accel"],"name":[3],"type":["chr"],"align":["left"]},{"label":["TopSpeed"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Range"],"name":[5],"type":["chr"],"align":["left"]},{"label":["Efficiency"],"name":[6],"type":["chr"],"align":["left"]},{"label":["FastCharge"],"name":[7],"type":["chr"],"align":["left"]},{"label":["RapidCharge"],"name":[8],"type":["chr"],"align":["left"]},{"label":["PowerTrain"],"name":[9],"type":["chr"],"align":["left"]},{"label":["PlugType"],"name":[10],"type":["chr"],"align":["left"]},{"label":["BodyStyle"],"name":[11],"type":["chr"],"align":["left"]},{"label":["Segment"],"name":[12],"type":["chr"],"align":["left"]},{"label":["Seats"],"name":[13],"type":["int"],"align":["right"]},{"label":["PriceEuro"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"Renault","2":"Twingo ZE","3":"12.6 sec","4":"135 km/h","5":"130 km","6":"164 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"4","14":"24790"},{"1":"Renault","2":"Kangoo Maxi ZE 33","3":"22.4 sec","4":"130 km/h","5":"160 km","6":"194 Wh/km","7":"-","8":"Rapid charging not possible","9":"Front Wheel Drive","10":"Type 2","11":"SPV","12":"N","13":"5","14":"38000"},{"1":"Smart","2":"EQ forfour","3":"12.7 sec","4":"130 km/h","5":"95 km","6":"176 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"4","14":"22030"},{"1":"Smart","2":"EQ fortwo coupe","3":"11.6 sec","4":"130 km/h","5":"100 km","6":"167 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"2","14":"21387"},{"1":"Smart","2":"EQ fortwo cabrio","3":"11.9 sec","4":"130 km/h","5":"95 km","6":"176 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Cabrio","12":"A","13":"2","14":"24565"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>I will apply imputation models to find out these missing values at
-the end of this section.</p>
+<p>Because there are only 5 missing values, and their proportion will
+not affect the statistics significantly, therefore I will just them.</p>
+<pre class="r"><code>ecar2 &lt;- na.omit(ecar2)</code></pre>
 </div>
 <div id="rapidcharge-yesno" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> RapidCharge
 Yes/No</h2>
-<p>In the column of “Rapid Charge”, there are two possible levels as
-follow:</p>
+<p>Here will remove the variable “RapidCharge” from the dataset because
+it has only 1 value, which is “Rapid charging possible” and this
+variable will add no value to the analysis.</p>
 <pre class="r"><code>unique(ecar2$RapidCharge) </code></pre>
-<pre><code>## [1] &quot;Rapid charging possible&quot;     &quot;Rapid charging not possible&quot;</code></pre>
-<p>This section changes them to “Yes” for it is possible for rapid
-charging, and “No”, it is not possible. This conversion is optional and
-as a rule of thumb, simpler description in the data will help us
-understand the information quicker.</p>
-<p>Completing the conversion with following codes:</p>
-<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
-  mutate(RapidCharge = fct_recode(RapidCharge,
-                                  &#39;Yes&#39; = &#39;Rapid charging possible&#39;,
-                                  &#39;No&#39; = &#39;Rapid charging not possible&#39;))</code></pre>
-<p>Now the conversion has been successful.</p>
-<pre class="r"><code>unique(ecar2$RapidCharge)</code></pre>
-<pre><code>## [1] Yes No 
-## Levels: No Yes</code></pre>
+<pre><code>## [1] &quot;Rapid charging possible&quot;</code></pre>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% dplyr::select(-RapidCharge)</code></pre>
 </div>
 <div id="powertrain-rename" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> PowerTrain
@@ -2272,9 +2266,54 @@ to a shorter version. The categories are:</p>
 <pre><code>## [1] AWD RWD FWD
 ## Levels: AWD FWD RWD</code></pre>
 </div>
-<div id="factor-conversion" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Factor
-Conversion</h2>
+<div id="triming" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Triming</h2>
+<p>This section will remove leading and/or trailing white spaces of
+values in all character variables. For example, looking at the first
+value of the variable “Brand”, the “Tesla” has a trailing space to be
+removed.</p>
+<pre class="r"><code>str(ecar2)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    98 obs. of  13 variables:
+##  $ Brand          : chr  &quot;Tesla &quot; &quot;Volkswagen &quot; &quot;Polestar &quot; &quot;BMW &quot; ...
+##  $ Model          : chr  &quot;Model 3 Long Range Dual Motor&quot; &quot;ID.3 Pure&quot; &quot;2&quot; &quot;iX3 &quot; ...
+##  $ Accel_sec      : num  4.6 10 4.7 6.8 9.5 2.8 9.6 8.1 5.6 6.3 ...
+##  $ TopSpeed_KmH   : num  233 160 210 180 145 250 150 150 225 180 ...
+##  $ Range_Km       : num  450 270 400 360 170 610 190 275 310 400 ...
+##  $ Efficiency_WhKm: num  161 167 181 206 168 180 168 164 153 193 ...
+##  $ Fastcharge_KmH : num  940 250 620 560 190 620 220 420 650 540 ...
+##  $ PowerTrain     : Factor w/ 3 levels &quot;AWD&quot;,&quot;FWD&quot;,&quot;RWD&quot;: 1 3 1 3 3 1 2 2 3 1 ...
+##  $ PlugType       : chr  &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; ...
+##  $ BodyStyle      : chr  &quot;Sedan&quot; &quot;Hatchback&quot; &quot;Liftback&quot; &quot;SUV&quot; ...
+##  $ Segment        : chr  &quot;D&quot; &quot;C&quot; &quot;D&quot; &quot;D&quot; ...
+##  $ Seats          : int  5 5 5 5 4 5 5 5 5 5 ...
+##  $ PriceEuro      : int  55480 30000 56440 68040 32997 105000 31900 29682 46380 55000 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:5] 58 69 78 83 92
+##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;58&quot; &quot;69&quot; &quot;78&quot; &quot;83&quot; ...</code></pre>
+<p>Following operation completes the task.</p>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
+  mutate_if(is.character, trimws)
+
+str(ecar2)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    98 obs. of  13 variables:
+##  $ Brand          : chr  &quot;Tesla&quot; &quot;Volkswagen&quot; &quot;Polestar&quot; &quot;BMW&quot; ...
+##  $ Model          : chr  &quot;Model 3 Long Range Dual Motor&quot; &quot;ID.3 Pure&quot; &quot;2&quot; &quot;iX3&quot; ...
+##  $ Accel_sec      : num  4.6 10 4.7 6.8 9.5 2.8 9.6 8.1 5.6 6.3 ...
+##  $ TopSpeed_KmH   : num  233 160 210 180 145 250 150 150 225 180 ...
+##  $ Range_Km       : num  450 270 400 360 170 610 190 275 310 400 ...
+##  $ Efficiency_WhKm: num  161 167 181 206 168 180 168 164 153 193 ...
+##  $ Fastcharge_KmH : num  940 250 620 560 190 620 220 420 650 540 ...
+##  $ PowerTrain     : Factor w/ 3 levels &quot;AWD&quot;,&quot;FWD&quot;,&quot;RWD&quot;: 1 3 1 3 3 1 2 2 3 1 ...
+##  $ PlugType       : chr  &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; &quot;Type 2 CCS&quot; ...
+##  $ BodyStyle      : chr  &quot;Sedan&quot; &quot;Hatchback&quot; &quot;Liftback&quot; &quot;SUV&quot; ...
+##  $ Segment        : chr  &quot;D&quot; &quot;C&quot; &quot;D&quot; &quot;D&quot; ...
+##  $ Seats          : int  5 5 5 5 4 5 5 5 5 5 ...
+##  $ PriceEuro      : int  55480 30000 56440 68040 32997 105000 31900 29682 46380 55000 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:5] 58 69 78 83 92
+##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;58&quot; &quot;69&quot; &quot;78&quot; &quot;83&quot; ...</code></pre>
+</div>
+<div id="factor-conversion-rearrangement" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Factor Conversion
+&amp; rearrangement</h2>
 <p>This section will convert character variables or discrete variable
 (numeric) that has categorical nature into factor.</p>
 <p>These variables are:</p>
@@ -2289,13 +2328,104 @@ Conversion</h2>
 </li>
 <li>Seats</li>
 </ul>
+<p>At the same time, these variables will be shifted forward and
+relocated after the variable “Model”.</p>
 <pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
   mutate(Brand = as.factor(Brand),
          PlugType = as.factor(PlugType),
          BodyStyle = as.factor(BodyStyle),
          Segment = as.factor(Segment),
          Seats = as.factor(Seats)
-         )</code></pre>
+         ) %&gt;% 
+  relocate(c(&quot;PowerTrain&quot;, &quot;PlugType&quot;, &quot;BodyStyle&quot;, &quot;Segment&quot;, &quot;Seats&quot;), .after = &quot;Model&quot;)</code></pre>
+</div>
+<div id="variable-removal" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Variable removal</h2>
+<p>This project will work on statistical analysis and the variable
+“Brand” will give no value to the analysis because there are 98 rows and
+yet almost all of the row has its own model label.</p>
+<pre class="r"><code>unique(ecar2$Model)</code></pre>
+<pre><code>##  [1] &quot;Model 3 Long Range Dual Motor&quot;   &quot;ID.3 Pure&quot;                      
+##  [3] &quot;2&quot;                               &quot;iX3&quot;                            
+##  [5] &quot;e&quot;                               &quot;Air&quot;                            
+##  [7] &quot;e-Golf&quot;                          &quot;e-208&quot;                          
+##  [9] &quot;Model 3 Standard Range Plus&quot;     &quot;Q4 e-tron&quot;                      
+## [11] &quot;EQC 400 4MATIC&quot;                  &quot;Leaf&quot;                           
+## [13] &quot;Kona Electric 64 kWh&quot;            &quot;i4&quot;                             
+## [15] &quot;IONIQ Electric&quot;                  &quot;ID.3 Pro S&quot;                     
+## [17] &quot;Taycan Turbo S&quot;                  &quot;e-Up!&quot;                          
+## [19] &quot;ZS EV&quot;                           &quot;Cooper SE&quot;                      
+## [21] &quot;Corsa-e&quot;                         &quot;Model Y Long Range Dual Motor&quot;  
+## [23] &quot;Enyaq iV 50&quot;                     &quot;e-tron GT&quot;                      
+## [25] &quot;Model 3 Long Range Performance&quot;  &quot;ID.4&quot;                           
+## [27] &quot;ID.3 Pro&quot;                        &quot;XC40 P8 AWD Recharge&quot;           
+## [29] &quot;i3 120 Ah&quot;                       &quot;e-2008 SUV&quot;                     
+## [31] &quot;e-tron 50 quattro&quot;               &quot;e-Niro 64 kWh&quot;                  
+## [33] &quot;Zoe ZE50 R110&quot;                   &quot;Cybertruck Tri Motor&quot;           
+## [35] &quot;MX-30&quot;                           &quot;Leaf e+&quot;                        
+## [37] &quot;UX 300e&quot;                         &quot;el-Born&quot;                        
+## [39] &quot;Zoe ZE50 R135&quot;                   &quot;EQA&quot;                            
+## [41] &quot;Model S Long Range&quot;              &quot;Kona Electric 39 kWh&quot;           
+## [43] &quot;e-tron Sportback 55 quattro&quot;     &quot;CITIGOe iV&quot;                     
+## [45] &quot;Mii Electric&quot;                    &quot;e-Soul 64 kWh&quot;                  
+## [47] &quot;Ampera-e&quot;                        &quot;Taycan 4S&quot;                      
+## [49] &quot;One&quot;                             &quot;U5&quot;                             
+## [51] &quot;e-tron 55 quattro&quot;               &quot;Roadster&quot;                       
+## [53] &quot;Mokka-e&quot;                         &quot;Enyaq iV 80&quot;                    
+## [55] &quot;Model X Long Range&quot;              &quot;e Advance&quot;                      
+## [57] &quot;3 Crossback E-Tense&quot;             &quot;e-C4&quot;                           
+## [59] &quot;Model S Performance&quot;             &quot;Zoe ZE40 R110&quot;                  
+## [61] &quot;Model Y Long Range Performance&quot;  &quot;Ariya 87kWh&quot;                    
+## [63] &quot;I-Pace&quot;                          &quot;Mustang Mach-E ER RWD&quot;          
+## [65] &quot;Taycan 4S Plus&quot;                  &quot;e-NV200 Evalia&quot;                 
+## [67] &quot;Cybertruck Dual Motor&quot;           &quot;Mustang Mach-E ER AWD&quot;          
+## [69] &quot;i3s 120 Ah&quot;                      &quot;Enyaq iV 80X&quot;                   
+## [71] &quot;Taycan Cross Turismo&quot;            &quot;M-Byte 95 kWh 4WD&quot;              
+## [73] &quot;Sion&quot;                            &quot;e-Niro 39 kWh&quot;                  
+## [75] &quot;Q4 Sportback e-tron&quot;             &quot;Mustang Mach-E SR AWD&quot;          
+## [77] &quot;Taycan Turbo&quot;                    &quot;ID.3 1st&quot;                       
+## [79] &quot;Model X Performance&quot;             &quot;Mustang Mach-E SR RWD&quot;          
+## [81] &quot;EQV 300 Long&quot;                    &quot;500e Hatchback&quot;                 
+## [83] &quot;Cybertruck Single Motor&quot;         &quot;e-tron Sportback 50 quattro&quot;    
+## [85] &quot;Enyaq iV vRS&quot;                    &quot;Enyaq iV 60&quot;                    
+## [87] &quot;e-tron S 55 quattro&quot;             &quot;Ariya e-4ORCE 87kWh&quot;            
+## [89] &quot;500e Convertible&quot;                &quot;ID.3 Pro Performance&quot;           
+## [91] &quot;e-Soul 39 kWh&quot;                   &quot;M-Byte 72 kWh 2WD&quot;              
+## [93] &quot;Ariya 63kWh&quot;                     &quot;e-tron S Sportback 55 quattro&quot;  
+## [95] &quot;Ariya e-4ORCE 63kWh&quot;             &quot;Ariya e-4ORCE 87kWh Performance&quot;
+## [97] &quot;M-Byte 95 kWh 2WD&quot;</code></pre>
+<p>Removing the “Model” variable:</p>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
+  dplyr::select(-Model)</code></pre>
+<p>Now the variables should be cleaned and ready for analysis.</p>
+<pre class="r"><code>glimpse(ecar2)</code></pre>
+<pre><code>## Rows: 98
+## Columns: 12
+## $ Brand           &lt;fct&gt; Tesla, Volkswagen, Polestar, BMW, Honda, Lucid, Volksw…
+## $ PowerTrain      &lt;fct&gt; AWD, RWD, AWD, RWD, RWD, AWD, FWD, FWD, RWD, AWD, AWD,…
+## $ PlugType        &lt;fct&gt; Type 2 CCS, Type 2 CCS, Type 2 CCS, Type 2 CCS, Type 2…
+## $ BodyStyle       &lt;fct&gt; Sedan, Hatchback, Liftback, SUV, Hatchback, Sedan, Hat…
+## $ Segment         &lt;fct&gt; D, C, D, D, B, F, C, B, D, D, D, C, B, D, C, C, F, A, …
+## $ Seats           &lt;fct&gt; 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, …
+## $ Accel_sec       &lt;dbl&gt; 4.6, 10.0, 4.7, 6.8, 9.5, 2.8, 9.6, 8.1, 5.6, 6.3, 5.1…
+## $ TopSpeed_KmH    &lt;dbl&gt; 233, 160, 210, 180, 145, 250, 150, 150, 225, 180, 180,…
+## $ Range_Km        &lt;dbl&gt; 450, 270, 400, 360, 170, 610, 190, 275, 310, 400, 370,…
+## $ Efficiency_WhKm &lt;dbl&gt; 161, 167, 181, 206, 168, 180, 168, 164, 153, 193, 216,…
+## $ Fastcharge_KmH  &lt;dbl&gt; 940, 250, 620, 560, 190, 620, 220, 420, 650, 540, 440,…
+## $ PriceEuro       &lt;int&gt; 55480, 30000, 56440, 68040, 32997, 105000, 31900, 2968…</code></pre>
+</div>
+</div>
+<div id="statistical-summary" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Statistical
+Summary</h1>
+<p>Examining the values of variables in the dataset.</p>
+<pre class="r"><code>data.frame(unclass(summary(ecar2, maxsum = 40)), 
+           check.names = F, 
+           stringsAsFactors = T)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["       Brand"],"name":[1],"type":["fct"],"align":["left"]},{"label":["PowerTrain"],"name":[2],"type":["fct"],"align":["left"]},{"label":["          PlugType"],"name":[3],"type":["fct"],"align":["left"]},{"label":["    BodyStyle"],"name":[4],"type":["fct"],"align":["left"]},{"label":["Segment"],"name":[5],"type":["fct"],"align":["left"]},{"label":["Seats"],"name":[6],"type":["fct"],"align":["left"]},{"label":["  Accel_sec"],"name":[7],"type":["fct"],"align":["left"]},{"label":[" TopSpeed_KmH"],"name":[8],"type":["fct"],"align":["left"]},{"label":["   Range_Km"],"name":[9],"type":["fct"],"align":["left"]},{"label":["Efficiency_WhKm"],"name":[10],"type":["fct"],"align":["left"]},{"label":["Fastcharge_KmH"],"name":[11],"type":["fct"],"align":["left"]},{"label":["  PriceEuro"],"name":[12],"type":["fct"],"align":["left"]}],"data":[{"1":"Aiways    : 1","2":"AWD:41","3":"Type 1 CHAdeMO: 1","4":"Cabrio   : 2","5":"A: 3","6":"4:19","7":"Min.   : 2.100","8":"Min.   :123.0","9":"Min.   :170.0","10":"Min.   :104.0","11":"Min.   :170.0","12":"Min.   : 20129","_rn_":"X"},{"1":"Audi      : 9","2":"FWD:36","3":"Type 2        : 4","4":"Hatchback:29","5":"B:22","6":"5:70","7":"1st Qu.: 5.100","8":"1st Qu.:150.0","9":"1st Qu.:258.8","10":"1st Qu.:168.0","11":"1st Qu.:275.0","12":"1st Qu.: 35000","_rn_":"X.1"},{"1":"BMW       : 4","2":"RWD:21","3":"Type 2 CCS    :90","4":"Liftback : 5","5":"C:30","6":"6: 3","7":"Median : 7.300","8":"Median :167.0","9":"Median :350.0","10":"Median :181.0","11":"Median :440.0","12":"Median : 45000","_rn_":"X.2"},{"1":"Byton     : 3","2":"NA","3":"Type 2 CHAdeMO: 3","4":"MPV      : 1","5":"D:15","6":"7: 6","7":"Mean   : 7.047","8":"Mean   :181.7","9":"Mean   :350.2","10":"Mean   :189.9","11":"Mean   :456.7","12":"Mean   : 57325","_rn_":"X.3"},{"1":"Citroen   : 1","2":"NA","3":"NA","4":"Pickup   : 3","5":"E:10","6":"NA","7":"3rd Qu.: 8.950","8":"3rd Qu.:200.0","9":"3rd Qu.:407.5","10":"3rd Qu.:206.0","11":"3rd Qu.:560.0","12":"3rd Qu.: 65465","_rn_":"X.4"},{"1":"CUPRA     : 1","2":"NA","3":"NA","4":"Sedan    :10","5":"F:12","6":"NA","7":"Max.   :14.000","8":"Max.   :410.0","9":"Max.   :970.0","10":"Max.   :273.0","11":"Max.   :940.0","12":"Max.   :215000","_rn_":"X.5"},{"1":"DS        : 1","2":"NA","3":"NA","4":"SPV      : 2","5":"N: 5","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.6"},{"1":"Fiat      : 2","2":"NA","3":"NA","4":"Station  : 1","5":"S: 1","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.7"},{"1":"Ford      : 4","2":"NA","3":"NA","4":"SUV      :45","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.8"},{"1":"Honda     : 2","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.9"},{"1":"Hyundai   : 3","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.10"},{"1":"Jaguar    : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.11"},{"1":"Kia       : 5","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.12"},{"1":"Lexus     : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.13"},{"1":"Lightyear : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.14"},{"1":"Lucid     : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.15"},{"1":"Mazda     : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.16"},{"1":"Mercedes  : 3","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.17"},{"1":"MG        : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.18"},{"1":"Mini      : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.19"},{"1":"Nissan    : 8","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.20"},{"1":"Opel      : 3","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.21"},{"1":"Peugeot   : 2","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.22"},{"1":"Polestar  : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.23"},{"1":"Porsche   : 5","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.24"},{"1":"Renault   : 3","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.25"},{"1":"SEAT      : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.26"},{"1":"Skoda     : 6","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.27"},{"1":"Sono      : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.28"},{"1":"Tesla     :13","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.29"},{"1":"Volkswagen: 8","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.30"},{"1":"Volvo     : 1","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","_rn_":"X.31"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
 </div>
 

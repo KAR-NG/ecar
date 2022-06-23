@@ -14,7 +14,7 @@ output:
 always_allow_html: yes
 ---
 
-# R library
+# R PACKAGES LOADED
 
 ```{r, message=FALSE, warning=FALSE}
 
@@ -175,32 +175,23 @@ slice(ecar, c(58, 69, 78, 83, 92))
 
 ```
 
-I will apply imputation models to find out these missing values at the end of this section.
+Because there are only 5 missing values, and their proportion will not affect the statistics significantly, therefore I will just them.
 
+```{r}
+ecar2 <- na.omit(ecar2)
+
+```
 
 ## RapidCharge Yes/No
 
-In the column of "Rapid Charge", there are two possible levels as follow: 
+Here will remove the variable "RapidCharge" from the dataset because it has only 1 value, which is "Rapid charging possible" and this variable will add no value to the analysis. 
 
 ```{r}
 unique(ecar2$RapidCharge) 
 ```
-This section changes them to "Yes" for it is possible for rapid charging, and "No", it is not possible. This conversion is optional and as a rule of thumb, simpler description in the data will help us understand the information quicker. 
-
-Completing the conversion with following codes:
 
 ```{r}
-ecar2 <- ecar2 %>% 
-  mutate(RapidCharge = fct_recode(RapidCharge,
-                                  'Yes' = 'Rapid charging possible',
-                                  'No' = 'Rapid charging not possible'))
-
-```
-
-Now the conversion has been successful. 
-
-```{r}
-unique(ecar2$RapidCharge)
+ecar2 <- ecar2 %>% dplyr::select(-RapidCharge)
 ```
 
 
@@ -231,7 +222,27 @@ unique(ecar2$PowerTrain)
 ```
 
 
-## Factor Conversion
+## Triming
+
+This section will remove leading and/or trailing white spaces of values in all character variables. For example, looking at the first value of the variable "Brand", the "Tesla " has a trailing space to be removed. 
+
+```{r}
+str(ecar2)
+```
+
+Following operation completes the task.
+
+```{r}
+ecar2 <- ecar2 %>% 
+  mutate_if(is.character, trimws)
+
+str(ecar2)
+
+```
+
+
+
+## Factor Conversion & rearrangement
 
 This section will convert character variables or discrete variable (numeric) that has categorical nature into factor.
 
@@ -243,6 +254,7 @@ These variables are:
 * Segment  
 * Seats  
 
+At the same time, these variables will be shifted forward and relocated after the variable "Model". 
 
 ```{r}
 ecar2 <- ecar2 %>% 
@@ -251,18 +263,54 @@ ecar2 <- ecar2 %>%
          BodyStyle = as.factor(BodyStyle),
          Segment = as.factor(Segment),
          Seats = as.factor(Seats)
-         )
+         ) %>% 
+  relocate(c("PowerTrain", "PlugType", "BodyStyle", "Segment", "Seats"), .after = "Model")
+  
 
 
 ```
 
 
+## Variables removal
 
+This project will work on statistical analysis and the variable "Brand" will give no value to the analysis because there are 98 rows and yet almost all of the row has its own model label. 
 
+Additionally, the variable "segment" will also be removed. It stands for "Market segment". It is irrelevant to the other variables in the dataset. 
 
+```{r}
+unique(ecar2$Model)
 
+```
+Removing the "Model" variable:
 
+```{r}
+ecar2 <- ecar2 %>% 
+  dplyr::select(-Model, -Segment)
 
+```
+
+Now the variables should be cleaned and ready for analysis. 
+
+```{r}
+glimpse(ecar2)
+```
+
+# Statistical Summary
+
+Examining the values of variables in the dataset. 
+
+```{r}
+
+data.frame(unclass(summary(ecar2, maxsum = 40)), 
+           check.names = F, 
+           stringsAsFactors = T) %>% 
+  remove_rownames()
+
+```
+
+```{r}
+glimpse(ecar2)
+```
 
 
 
