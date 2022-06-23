@@ -1499,6 +1499,230 @@ window.onload = function() {
   PagedTableDoc.initAll();
 };
 </script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -1666,10 +1890,15 @@ a electrical car dataset to understand about electric cars.</p>
 </div>
 <div id="data-preparation" class="section level2">
 <h2>DATA PREPARATION</h2>
+<p>Dataset used in this project is a public dataset available on Kaggle,
+visit this <a href="https://www.kaggle.com/datasets/geoffnel/evs-one-electric-vehicle-dataset">link</a>
+to the relevant page. The dataset has been downloaded as a csv format
+and will be imported in next section.</p>
 <div id="data-import" class="section level3">
 <h3>DATA IMPORT</h3>
 <p>This section imports the dataset.</p>
 <pre class="r"><code>ecar &lt;- read.csv(&quot;ElectricCarData_Norm.csv&quot;)</code></pre>
+<p>Following is the row dataset.</p>
 <pre class="r"><code>data.table(ecar)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1679,6 +1908,166 @@ a electrical car dataset to understand about electric cars.</p>
 </div>
 <div id="data-description" class="section level3">
 <h3>DATA DESCRIPTION</h3>
+<pre class="r"><code>Variables &lt;- c(&quot;Brand&quot;, 
+               &quot;Model&quot;, 
+               &quot;AccelSec&quot;,
+               &quot;TopSpeed_KmH&quot;,
+               &quot;Range_Km&quot;,
+               &quot;Efficiency_WhKm&quot;,
+               &quot;FastCharge_KmH&quot;,
+               &quot;RapidCharge&quot;,
+               &quot;PowerTrain&quot;,
+               &quot;PlugType&quot;,
+               &quot;BodyStyle&quot;,
+               &quot;Segment&quot;,
+               &quot;Seats&quot;,
+               &quot;PriceEuro&quot;)
+
+Description &lt;- c(&quot;Manufacturer of the vehicle&quot;,
+                 &quot;Model name&quot;,
+                 &quot;Acceleration as 0-100 km/h&quot;,
+                 &quot;The top speed in km/h&quot;,
+                 &quot;Range in km&quot;,
+                 &quot;Efficiency Wh/km&quot;,
+                 &quot;Charge km/h&quot;,
+                 &quot;Yes / No&quot;,
+                 &quot;Front, rear, or all wheel drive&quot;,
+                 &quot;Plug type&quot;,
+                 &quot;Basic size or style&quot;,
+                 &quot;Market segment&quot;,
+                 &quot;Number of seats&quot;,
+                 &quot;Price in Germany before tax incentives&quot;)
+
+
+data.frame(Variables, Description) %&gt;% 
+  kbl() %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;bordered&quot;, &quot;striped&quot;), full_width = F)</code></pre>
+<table class="table table-bordered table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Variables
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Brand
+</td>
+<td style="text-align:left;">
+Manufacturer of the vehicle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Model
+</td>
+<td style="text-align:left;">
+Model name
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AccelSec
+</td>
+<td style="text-align:left;">
+Acceleration as 0-100 km/h
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TopSpeed_KmH
+</td>
+<td style="text-align:left;">
+The top speed in km/h
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Range_Km
+</td>
+<td style="text-align:left;">
+Range in km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Efficiency_WhKm
+</td>
+<td style="text-align:left;">
+Efficiency Wh/km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FastCharge_KmH
+</td>
+<td style="text-align:left;">
+Charge km/h
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RapidCharge
+</td>
+<td style="text-align:left;">
+Yes / No
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PowerTrain
+</td>
+<td style="text-align:left;">
+Front, rear, or all wheel drive
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PlugType
+</td>
+<td style="text-align:left;">
+Plug type
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BodyStyle
+</td>
+<td style="text-align:left;">
+Basic size or style
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Segment
+</td>
+<td style="text-align:left;">
+Market segment
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Seats
+</td>
+<td style="text-align:left;">
+Number of seats
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PriceEuro
+</td>
+<td style="text-align:left;">
+Price in Germany before tax incentives
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="data-exploration" class="section level3">
 <h3>DATA EXPLORATION</h3>

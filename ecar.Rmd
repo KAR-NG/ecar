@@ -27,8 +27,9 @@ library(kableExtra)
 
 This project will apply an intensive list of statistical analyses on a electrical car dataset to understand about electric cars.
 
-
 ## DATA PREPARATION
+
+Dataset used in this project is a public dataset available on Kaggle, visit this [link](https://www.kaggle.com/datasets/geoffnel/evs-one-electric-vehicle-dataset) to the relevant page. The dataset has been downloaded as a csv format and will be imported in next section. 
 
 ### DATA IMPORT
 
@@ -39,11 +40,53 @@ ecar <- read.csv("ElectricCarData_Norm.csv")
 
 ```
 
+Following is the row dataset.
+
 ```{r}
 data.table(ecar)
 ```
 
 ### DATA DESCRIPTION
+
+
+```{r}
+Variables <- c("Brand", 
+               "Model", 
+               "AccelSec",
+               "TopSpeed_KmH",
+               "Range_Km",
+               "Efficiency_WhKm",
+               "FastCharge_KmH",
+               "RapidCharge",
+               "PowerTrain",
+               "PlugType",
+               "BodyStyle",
+               "Segment",
+               "Seats",
+               "PriceEuro")
+
+Description <- c("Manufacturer of the vehicle",
+                 "Model name",
+                 "Acceleration as 0-100 km/h",
+                 "The top speed in km/h",
+                 "Range in km",
+                 "Efficiency Wh/km",
+                 "Charge km/h",
+                 "Yes / No",
+                 "Front, rear, or all wheel drive",
+                 "Plug type",
+                 "Basic size or style",
+                 "Market segment",
+                 "Number of seats",
+                 "Price in Germany before tax incentives")
+
+
+data.frame(Variables, Description) %>% 
+  kbl() %>% 
+  kable_styling(bootstrap_options = c("bordered", "striped"), full_width = F)
+
+
+```
 
 
 
