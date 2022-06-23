@@ -1,0 +1,50 @@
+---
+title: "ecar"
+author: "Kar"
+date: '2022-06-23'
+output:
+  html_document:
+    toc: yes
+    toc_depth: '4'
+    df_print: paged
+  github_document:
+    toc: yes
+    toc_depth: 4
+always_allow_html: yes
+---
+
+## R library
+
+```{r, message=FALSE, warning=FALSE}
+
+library(data.table)
+library(tidyverse)
+library(kableExtra)
+
+```
+
+## INTRODUCTION
+
+This project will apply an intensive list of statistical analyses on a electrical car dataset to understand about electric cars.
+
+
+## DATA PREPARATION
+
+### DATA IMPORT
+
+This section imports the dataset.
+
+```{r}
+ecar <- read.csv("ElectricCarData_Norm.csv")
+
+```
+
+```{r}
+data.table(ecar)
+```
+
+### DATA DESCRIPTION
+
+
+
+### DATA EXPLORATION
