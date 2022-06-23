@@ -1882,6 +1882,8 @@ DATA CLEANING</a>
 <ul>
 <li><a href="#numeric-conversion"><span class="toc-section-number">4.1</span> Numeric Conversion</a></li>
 <li><a href="#rapidcharge-yesno"><span class="toc-section-number">4.2</span> RapidCharge Yes/No</a></li>
+<li><a href="#powertrain-rename"><span class="toc-section-number">4.3</span> PowerTrain Rename</a></li>
+<li><a href="#factor-conversion"><span class="toc-section-number">4.4</span> Factor Conversion</a></li>
 </ul></li>
 </ul>
 </div>
@@ -2251,6 +2253,49 @@ understand the information quicker.</p>
 <pre class="r"><code>unique(ecar2$RapidCharge)</code></pre>
 <pre><code>## [1] Yes No 
 ## Levels: No Yes</code></pre>
+</div>
+<div id="powertrain-rename" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> PowerTrain
+Rename</h2>
+<p>This section change the category names of the variable “PowerTrain”
+to a shorter version. The categories are:</p>
+<pre class="r"><code>unique(ecar2$PowerTrain)</code></pre>
+<pre><code>## [1] &quot;All Wheel Drive&quot;   &quot;Rear Wheel Drive&quot;  &quot;Front Wheel Drive&quot;</code></pre>
+<p>They will be changed to “AWD”, “RWD, and”FWD” accordingly.</p>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
+  mutate(PowerTrain = fct_recode(PowerTrain, 
+                                 &quot;AWD&quot; = &quot;All Wheel Drive&quot;,
+                                 &quot;RWD&quot; = &quot;Rear Wheel Drive&quot;,
+                                 &quot;FWD&quot; = &quot;Front Wheel Drive&quot;))</code></pre>
+<p>Now the conversion has been completed.</p>
+<pre class="r"><code>unique(ecar2$PowerTrain)</code></pre>
+<pre><code>## [1] AWD RWD FWD
+## Levels: AWD FWD RWD</code></pre>
+</div>
+<div id="factor-conversion" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Factor
+Conversion</h2>
+<p>This section will convert character variables or discrete variable
+(numeric) that has categorical nature into factor.</p>
+<p>These variables are:</p>
+<ul>
+<li>Brand<br />
+</li>
+<li>PlugType<br />
+</li>
+<li>BodyStyle<br />
+</li>
+<li>Segment<br />
+</li>
+<li>Seats</li>
+</ul>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
+  mutate(Brand = as.factor(Brand),
+         PlugType = as.factor(PlugType),
+         BodyStyle = as.factor(BodyStyle),
+         Segment = as.factor(Segment),
+         Seats = as.factor(Seats)
+         )</code></pre>
 </div>
 </div>
 

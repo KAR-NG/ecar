@@ -204,5 +204,66 @@ unique(ecar2$RapidCharge)
 ```
 
 
+## PowerTrain Rename
+
+This section change the category names of the variable "PowerTrain" to a shorter version. The categories are:
+
+```{r}
+unique(ecar2$PowerTrain)
+```
+They will be changed to "AWD", "RWD, and "FWD" accordingly. 
+
+```{r}
+ecar2 <- ecar2 %>% 
+  mutate(PowerTrain = fct_recode(PowerTrain, 
+                                 "AWD" = "All Wheel Drive",
+                                 "RWD" = "Rear Wheel Drive",
+                                 "FWD" = "Front Wheel Drive"))
+
+
+```
+
+Now the conversion has been completed. 
+
+```{r}
+unique(ecar2$PowerTrain)
+
+```
+
+
+## Factor Conversion
+
+This section will convert character variables or discrete variable (numeric) that has categorical nature into factor.
+
+These variables are:
+
+* Brand  
+* PlugType  
+* BodyStyle  
+* Segment  
+* Seats  
+
+
+```{r}
+ecar2 <- ecar2 %>% 
+  mutate(Brand = as.factor(Brand),
+         PlugType = as.factor(PlugType),
+         BodyStyle = as.factor(BodyStyle),
+         Segment = as.factor(Segment),
+         Seats = as.factor(Seats)
+         )
+
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
