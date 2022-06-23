@@ -7,31 +7,33 @@ output:
     toc: yes
     toc_depth: '4'
     df_print: paged
+    number_sections: true
   github_document:
     toc: yes
     toc_depth: 4
 always_allow_html: yes
 ---
 
-## R library
+# R library
 
 ```{r, message=FALSE, warning=FALSE}
 
 library(data.table)
 library(tidyverse)
 library(kableExtra)
+library(skimr)
 
 ```
 
-## INTRODUCTION
+# INTRODUCTION
 
 This project will apply an intensive list of statistical analyses on a electrical car dataset to understand about electric cars.
 
-## DATA PREPARATION
+# DATA PREPARATION
 
 Dataset used in this project is a public dataset available on Kaggle, visit this [link](https://www.kaggle.com/datasets/geoffnel/evs-one-electric-vehicle-dataset) to the relevant page. The dataset has been downloaded as a csv format and will be imported in next section. 
 
-### DATA IMPORT
+## Data Import
 
 This section imports the dataset.
 
@@ -46,10 +48,11 @@ Following is the row dataset.
 data.table(ecar)
 ```
 
-### DATA DESCRIPTION
-
+## Data Description
 
 ```{r}
+No. <- c(1:14)
+
 Variables <- c("Brand", 
                "Model", 
                "AccelSec",
@@ -81,13 +84,125 @@ Description <- c("Manufacturer of the vehicle",
                  "Price in Germany before tax incentives")
 
 
-data.frame(Variables, Description) %>% 
+data.frame(No. , Variables, Description) %>% 
   kbl() %>% 
-  kable_styling(bootstrap_options = c("bordered", "striped"), full_width = F)
+  kable_styling(bootstrap_options = c("bordered", "striped", "hover"), 
+                full_width = F,
+                position = "left") %>% 
+  row_spec(0, angle = -2)
 
 
 ```
 
 
 
-### DATA EXPLORATION
+## Data exploration
+
+**1. Data structure**
+
+There are 103 rows of data in the dataset and 14 columns of variables. 
+
+```{r}
+glimpse(ecar)
+
+```
+
+* 12 columns are characters but mostly should be numerical such as Accel, TopSpeed, Range, Efficiency, and FastCharge.  
+
+* 2 columns are integers but the "Seats" variables should be converted to factor type. 
+
+* Many of the character type variables will need to be converted into factor for their categorical nature. 
+
+**2. Missing values**
+
+There are no missing values in the dataset.
+
+```{r}
+colSums(is.na(ecar))
+
+```
+
+
+# DATA CLEANING
+
+## Numeric Conversion
+
+Following codes rename the variables that need to be numerical and remove the units in their values to allow structural conversion from character to numerical. They are:
+
+* Accel_sec    
+* TopSpeed_KmH  
+* Range_KmH  
+* Efficiency_WhKm  
+* Fastcharge_KmH  
+
+```{r}
+ecar2 <- ecar %>%
+  rename("Accel_sec" = "Accel",
+         "TopSpeed_KmH" = "TopSpeed",
+         "Range_Km" = "Range",
+         "Efficiency_WhKm" = "Efficiency",
+         "Fastcharge_KmH" = "FastCharge") %>% 
+  mutate(Accel_sec = str_remove(Accel_sec, "sec"),
+         TopSpeed_KmH = str_remove(TopSpeed_KmH, "km/h"),
+         Range_Km = str_remove(Range_Km, "km"),
+         Efficiency_WhKm = str_remove(Efficiency_WhKm, "Wh/km"),
+         Fastcharge_KmH = str_remove(Fastcharge_KmH, "km/h"),
+         # numerical conversion
+         Accel_sec = as.numeric(Accel_sec),
+         TopSpeed_KmH = as.numeric(TopSpeed_KmH),
+         Range_Km = as.numeric(Range_Km),
+         Efficiency_WhKm = as.numeric(Efficiency_WhKm),
+         Fastcharge_KmH = as.numeric(Fastcharge_KmH)) 
+
+```
+
+From the warning, some NAs has been induced to the variable "Fastcharge_KmH". 5 NAs has been introduced from following output. 
+
+```{r}
+colSums(is.na(ecar2))
+```
+
+Investigating the reason by first searching for the indexes of these NAs.
+
+```{r}
+which(is.na(ecar2$Fastcharge_KmH))
+
+```
+Targeting the respect index of original dataset and found the reasons that "-" has been given to these values instead of numbers. 
+
+```{r}
+slice(ecar, c(58, 69, 78, 83, 92))
+
+```
+
+I will apply imputation models to find out these missing values at the end of this section.
+
+
+## RapidCharge Yes/No
+
+In the column of "Rapid Charge", there are two possible levels as follow: 
+
+```{r}
+unique(ecar2$RapidCharge) 
+```
+This section changes them to "Yes" for it is possible for rapid charging, and "No", it is not possible. This conversion is optional and as a rule of thumb, simpler description in the data will help us understand the information quicker. 
+
+Completing the conversion with following codes:
+
+```{r}
+ecar2 <- ecar2 %>% 
+  mutate(RapidCharge = fct_recode(RapidCharge,
+                                  'Yes' = 'Rapid charging possible',
+                                  'No' = 'Rapid charging not possible'))
+
+```
+
+Now the conversion has been successful. 
+
+```{r}
+unique(ecar2$RapidCharge)
+```
+
+
+
+

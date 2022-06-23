@@ -1866,36 +1866,46 @@ pre code {
 
 <div id="TOC">
 <ul>
-<li><a href="#r-library">R library</a></li>
-<li><a href="#introduction">INTRODUCTION</a></li>
-<li><a href="#data-preparation">DATA PREPARATION</a>
+<li><a href="#r-library"><span class="toc-section-number">1</span> R
+library</a></li>
+<li><a href="#introduction"><span class="toc-section-number">2</span>
+INTRODUCTION</a></li>
+<li><a href="#data-preparation"><span class="toc-section-number">3</span> DATA PREPARATION</a>
 <ul>
-<li><a href="#data-import">DATA IMPORT</a></li>
-<li><a href="#data-description">DATA DESCRIPTION</a></li>
-<li><a href="#data-exploration">DATA EXPLORATION</a></li>
+<li><a href="#data-import"><span class="toc-section-number">3.1</span>
+Data Import</a></li>
+<li><a href="#data-description"><span class="toc-section-number">3.2</span> Data Description</a></li>
+<li><a href="#data-exploration"><span class="toc-section-number">3.3</span> Data exploration</a></li>
+</ul></li>
+<li><a href="#data-cleaning"><span class="toc-section-number">4</span>
+DATA CLEANING</a>
+<ul>
+<li><a href="#numeric-conversion"><span class="toc-section-number">4.1</span> Numeric Conversion</a></li>
+<li><a href="#rapidcharge-yesno"><span class="toc-section-number">4.2</span> RapidCharge Yes/No</a></li>
 </ul></li>
 </ul>
 </div>
 
-<div id="r-library" class="section level2">
-<h2>R library</h2>
+<div id="r-library" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> R library</h1>
 <pre class="r"><code>library(data.table)
 library(tidyverse)
-library(kableExtra)</code></pre>
+library(kableExtra)
+library(skimr)</code></pre>
 </div>
-<div id="introduction" class="section level2">
-<h2>INTRODUCTION</h2>
+<div id="introduction" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> INTRODUCTION</h1>
 <p>This project will apply an intensive list of statistical analyses on
 a electrical car dataset to understand about electric cars.</p>
 </div>
-<div id="data-preparation" class="section level2">
-<h2>DATA PREPARATION</h2>
+<div id="data-preparation" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> DATA PREPARATION</h1>
 <p>Dataset used in this project is a public dataset available on Kaggle,
 visit this <a href="https://www.kaggle.com/datasets/geoffnel/evs-one-electric-vehicle-dataset">link</a>
 to the relevant page. The dataset has been downloaded as a csv format
 and will be imported in next section.</p>
-<div id="data-import" class="section level3">
-<h3>DATA IMPORT</h3>
+<div id="data-import" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data Import</h2>
 <p>This section imports the dataset.</p>
 <pre class="r"><code>ecar &lt;- read.csv(&quot;ElectricCarData_Norm.csv&quot;)</code></pre>
 <p>Following is the row dataset.</p>
@@ -1906,9 +1916,11 @@ and will be imported in next section.</p>
   </script>
 </div>
 </div>
-<div id="data-description" class="section level3">
-<h3>DATA DESCRIPTION</h3>
-<pre class="r"><code>Variables &lt;- c(&quot;Brand&quot;, 
+<div id="data-description" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Data Description</h2>
+<pre class="r"><code>No. &lt;- c(1:14)
+
+Variables &lt;- c(&quot;Brand&quot;, 
                &quot;Model&quot;, 
                &quot;AccelSec&quot;,
                &quot;TopSpeed_KmH&quot;,
@@ -1939,22 +1951,31 @@ Description &lt;- c(&quot;Manufacturer of the vehicle&quot;,
                  &quot;Price in Germany before tax incentives&quot;)
 
 
-data.frame(Variables, Description) %&gt;% 
+data.frame(No. , Variables, Description) %&gt;% 
   kbl() %&gt;% 
-  kable_styling(bootstrap_options = c(&quot;bordered&quot;, &quot;striped&quot;), full_width = F)</code></pre>
-<table class="table table-bordered table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+  kable_styling(bootstrap_options = c(&quot;bordered&quot;, &quot;striped&quot;, &quot;hover&quot;), 
+                full_width = F,
+                position = &quot;left&quot;) %&gt;% 
+  row_spec(0, angle = -2)</code></pre>
+<table class="table table-bordered table-striped table-hover" style="width: auto !important; ">
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:right;-webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); -ms-transform: rotate(-2deg); -o-transform: rotate(-2deg); transform: rotate(-2deg);">
+No. 
+</th>
+<th style="text-align:left;-webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); -ms-transform: rotate(-2deg); -o-transform: rotate(-2deg); transform: rotate(-2deg);">
 Variables
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;-webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); -ms-transform: rotate(-2deg); -o-transform: rotate(-2deg); transform: rotate(-2deg);">
 Description
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 Brand
 </td>
@@ -1963,6 +1984,9 @@ Manufacturer of the vehicle
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 Model
 </td>
@@ -1971,6 +1995,9 @@ Model name
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+3
+</td>
 <td style="text-align:left;">
 AccelSec
 </td>
@@ -1979,6 +2006,9 @@ Acceleration as 0-100 km/h
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+4
+</td>
 <td style="text-align:left;">
 TopSpeed_KmH
 </td>
@@ -1987,6 +2017,9 @@ The top speed in km/h
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+5
+</td>
 <td style="text-align:left;">
 Range_Km
 </td>
@@ -1995,6 +2028,9 @@ Range in km
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+6
+</td>
 <td style="text-align:left;">
 Efficiency_WhKm
 </td>
@@ -2003,6 +2039,9 @@ Efficiency Wh/km
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+7
+</td>
 <td style="text-align:left;">
 FastCharge_KmH
 </td>
@@ -2011,6 +2050,9 @@ Charge km/h
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+8
+</td>
 <td style="text-align:left;">
 RapidCharge
 </td>
@@ -2019,6 +2061,9 @@ Yes / No
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+9
+</td>
 <td style="text-align:left;">
 PowerTrain
 </td>
@@ -2027,6 +2072,9 @@ Front, rear, or all wheel drive
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+10
+</td>
 <td style="text-align:left;">
 PlugType
 </td>
@@ -2035,6 +2083,9 @@ Plug type
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+11
+</td>
 <td style="text-align:left;">
 BodyStyle
 </td>
@@ -2043,6 +2094,9 @@ Basic size or style
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+12
+</td>
 <td style="text-align:left;">
 Segment
 </td>
@@ -2051,6 +2105,9 @@ Market segment
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+13
+</td>
 <td style="text-align:left;">
 Seats
 </td>
@@ -2059,6 +2116,9 @@ Number of seats
 </td>
 </tr>
 <tr>
+<td style="text-align:right;">
+14
+</td>
 <td style="text-align:left;">
 PriceEuro
 </td>
@@ -2069,8 +2129,128 @@ Price in Germany before tax incentives
 </tbody>
 </table>
 </div>
-<div id="data-exploration" class="section level3">
-<h3>DATA EXPLORATION</h3>
+<div id="data-exploration" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Data exploration</h2>
+<p><strong>1. Data structure</strong></p>
+<p>There are 103 rows of data in the dataset and 14 columns of
+variables.</p>
+<pre class="r"><code>glimpse(ecar)</code></pre>
+<pre><code>## Rows: 103
+## Columns: 14
+## $ Brand       &lt;chr&gt; &quot;Tesla &quot;, &quot;Volkswagen &quot;, &quot;Polestar &quot;, &quot;BMW &quot;, &quot;Honda &quot;, &quot;L…
+## $ Model       &lt;chr&gt; &quot;Model 3 Long Range Dual Motor&quot;, &quot;ID.3 Pure&quot;, &quot;2&quot;, &quot;iX3 &quot;,…
+## $ Accel       &lt;chr&gt; &quot;4.6 sec&quot;, &quot;10.0 sec&quot;, &quot;4.7 sec&quot;, &quot;6.8 sec&quot;, &quot;9.5 sec&quot;, &quot;2…
+## $ TopSpeed    &lt;chr&gt; &quot;233 km/h&quot;, &quot;160 km/h&quot;, &quot;210 km/h&quot;, &quot;180 km/h&quot;, &quot;145 km/h&quot;…
+## $ Range       &lt;chr&gt; &quot;450 km&quot;, &quot;270 km&quot;, &quot;400 km&quot;, &quot;360 km&quot;, &quot;170 km&quot;, &quot;610 km&quot;…
+## $ Efficiency  &lt;chr&gt; &quot;161 Wh/km&quot;, &quot;167 Wh/km&quot;, &quot;181 Wh/km&quot;, &quot;206 Wh/km&quot;, &quot;168 W…
+## $ FastCharge  &lt;chr&gt; &quot;940 km/h&quot;, &quot;250 km/h&quot;, &quot;620 km/h&quot;, &quot;560 km/h&quot;, &quot;190 km/h&quot;…
+## $ RapidCharge &lt;chr&gt; &quot;Rapid charging possible&quot;, &quot;Rapid charging possible&quot;, &quot;Rap…
+## $ PowerTrain  &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;Rear Wheel Drive&quot;, &quot;All Wheel Drive&quot;, …
+## $ PlugType    &lt;chr&gt; &quot;Type 2 CCS&quot;, &quot;Type 2 CCS&quot;, &quot;Type 2 CCS&quot;, &quot;Type 2 CCS&quot;, &quot;T…
+## $ BodyStyle   &lt;chr&gt; &quot;Sedan&quot;, &quot;Hatchback&quot;, &quot;Liftback&quot;, &quot;SUV&quot;, &quot;Hatchback&quot;, &quot;Sed…
+## $ Segment     &lt;chr&gt; &quot;D&quot;, &quot;C&quot;, &quot;D&quot;, &quot;D&quot;, &quot;B&quot;, &quot;F&quot;, &quot;C&quot;, &quot;B&quot;, &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;C&quot;…
+## $ Seats       &lt;int&gt; 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 5, 4…
+## $ PriceEuro   &lt;int&gt; 55480, 30000, 56440, 68040, 32997, 105000, 31900, 29682, 4…</code></pre>
+<ul>
+<li><p>12 columns are characters but mostly should be numerical such as
+Accel, TopSpeed, Range, Efficiency, and FastCharge.</p></li>
+<li><p>2 columns are integers but the “Seats” variables should be
+converted to factor type.</p></li>
+<li><p>Many of the character type variables will need to be converted
+into factor for their categorical nature.</p></li>
+</ul>
+<p><strong>2. Missing values</strong></p>
+<p>There are no missing values in the dataset.</p>
+<pre class="r"><code>colSums(is.na(ecar))</code></pre>
+<pre><code>##       Brand       Model       Accel    TopSpeed       Range  Efficiency 
+##           0           0           0           0           0           0 
+##  FastCharge RapidCharge  PowerTrain    PlugType   BodyStyle     Segment 
+##           0           0           0           0           0           0 
+##       Seats   PriceEuro 
+##           0           0</code></pre>
+</div>
+</div>
+<div id="data-cleaning" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> DATA CLEANING</h1>
+<div id="numeric-conversion" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Numeric
+Conversion</h2>
+<p>Following codes rename the variables that need to be numerical and
+remove the units in their values to allow structural conversion from
+character to numerical. They are:</p>
+<ul>
+<li>Accel_sec<br />
+</li>
+<li>TopSpeed_KmH<br />
+</li>
+<li>Range_KmH<br />
+</li>
+<li>Efficiency_WhKm<br />
+</li>
+<li>Fastcharge_KmH</li>
+</ul>
+<pre class="r"><code>ecar2 &lt;- ecar %&gt;%
+  rename(&quot;Accel_sec&quot; = &quot;Accel&quot;,
+         &quot;TopSpeed_KmH&quot; = &quot;TopSpeed&quot;,
+         &quot;Range_Km&quot; = &quot;Range&quot;,
+         &quot;Efficiency_WhKm&quot; = &quot;Efficiency&quot;,
+         &quot;Fastcharge_KmH&quot; = &quot;FastCharge&quot;) %&gt;% 
+  mutate(Accel_sec = str_remove(Accel_sec, &quot;sec&quot;),
+         TopSpeed_KmH = str_remove(TopSpeed_KmH, &quot;km/h&quot;),
+         Range_Km = str_remove(Range_Km, &quot;km&quot;),
+         Efficiency_WhKm = str_remove(Efficiency_WhKm, &quot;Wh/km&quot;),
+         Fastcharge_KmH = str_remove(Fastcharge_KmH, &quot;km/h&quot;),
+         # numerical conversion
+         Accel_sec = as.numeric(Accel_sec),
+         TopSpeed_KmH = as.numeric(TopSpeed_KmH),
+         Range_Km = as.numeric(Range_Km),
+         Efficiency_WhKm = as.numeric(Efficiency_WhKm),
+         Fastcharge_KmH = as.numeric(Fastcharge_KmH)) </code></pre>
+<pre><code>## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion</code></pre>
+<p>From the warning, some NAs has been induced to the variable
+“Fastcharge_KmH”. 5 NAs has been introduced from following output.</p>
+<pre class="r"><code>colSums(is.na(ecar2))</code></pre>
+<pre><code>##           Brand           Model       Accel_sec    TopSpeed_KmH        Range_Km 
+##               0               0               0               0               0 
+## Efficiency_WhKm  Fastcharge_KmH     RapidCharge      PowerTrain        PlugType 
+##               0               5               0               0               0 
+##       BodyStyle         Segment           Seats       PriceEuro 
+##               0               0               0               0</code></pre>
+<p>Investigating the reason by first searching for the indexes of these
+NAs.</p>
+<pre class="r"><code>which(is.na(ecar2$Fastcharge_KmH))</code></pre>
+<pre><code>## [1] 58 69 78 83 92</code></pre>
+<p>Targeting the respect index of original dataset and found the reasons
+that “-” has been given to these values instead of numbers.</p>
+<pre class="r"><code>slice(ecar, c(58, 69, 78, 83, 92))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Brand"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Model"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Accel"],"name":[3],"type":["chr"],"align":["left"]},{"label":["TopSpeed"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Range"],"name":[5],"type":["chr"],"align":["left"]},{"label":["Efficiency"],"name":[6],"type":["chr"],"align":["left"]},{"label":["FastCharge"],"name":[7],"type":["chr"],"align":["left"]},{"label":["RapidCharge"],"name":[8],"type":["chr"],"align":["left"]},{"label":["PowerTrain"],"name":[9],"type":["chr"],"align":["left"]},{"label":["PlugType"],"name":[10],"type":["chr"],"align":["left"]},{"label":["BodyStyle"],"name":[11],"type":["chr"],"align":["left"]},{"label":["Segment"],"name":[12],"type":["chr"],"align":["left"]},{"label":["Seats"],"name":[13],"type":["int"],"align":["right"]},{"label":["PriceEuro"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"Renault","2":"Twingo ZE","3":"12.6 sec","4":"135 km/h","5":"130 km","6":"164 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"4","14":"24790"},{"1":"Renault","2":"Kangoo Maxi ZE 33","3":"22.4 sec","4":"130 km/h","5":"160 km","6":"194 Wh/km","7":"-","8":"Rapid charging not possible","9":"Front Wheel Drive","10":"Type 2","11":"SPV","12":"N","13":"5","14":"38000"},{"1":"Smart","2":"EQ forfour","3":"12.7 sec","4":"130 km/h","5":"95 km","6":"176 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"4","14":"22030"},{"1":"Smart","2":"EQ fortwo coupe","3":"11.6 sec","4":"130 km/h","5":"100 km","6":"167 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Hatchback","12":"A","13":"2","14":"21387"},{"1":"Smart","2":"EQ fortwo cabrio","3":"11.9 sec","4":"130 km/h","5":"95 km","6":"176 Wh/km","7":"-","8":"Rapid charging not possible","9":"Rear Wheel Drive","10":"Type 2","11":"Cabrio","12":"A","13":"2","14":"24565"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>I will apply imputation models to find out these missing values at
+the end of this section.</p>
+</div>
+<div id="rapidcharge-yesno" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> RapidCharge
+Yes/No</h2>
+<p>In the column of “Rapid Charge”, there are two possible levels as
+follow:</p>
+<pre class="r"><code>unique(ecar2$RapidCharge) </code></pre>
+<pre><code>## [1] &quot;Rapid charging possible&quot;     &quot;Rapid charging not possible&quot;</code></pre>
+<p>This section changes them to “Yes” for it is possible for rapid
+charging, and “No”, it is not possible. This conversion is optional and
+as a rule of thumb, simpler description in the data will help us
+understand the information quicker.</p>
+<p>Completing the conversion with following codes:</p>
+<pre class="r"><code>ecar2 &lt;- ecar2 %&gt;% 
+  mutate(RapidCharge = fct_recode(RapidCharge,
+                                  &#39;Yes&#39; = &#39;Rapid charging possible&#39;,
+                                  &#39;No&#39; = &#39;Rapid charging not possible&#39;))</code></pre>
+<p>Now the conversion has been successful.</p>
+<pre class="r"><code>unique(ecar2$RapidCharge)</code></pre>
+<pre><code>## [1] Yes No 
+## Levels: No Yes</code></pre>
 </div>
 </div>
 
